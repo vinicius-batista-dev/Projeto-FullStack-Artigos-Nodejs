@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const conn = require('./database/database');
+const categoriesController = require("./categories/CategoriesController");
+const articlesController = require("./articles/ArticlesController");
 
 const app = express();
 
@@ -14,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 conn.authenticate().then(() => { console.log("Conexao feita com sucesso.");}).catch((erro) => {console.log(erro)});
+
+app.use("/", categoriesController);
+app.use("/", articlesController);
 
 app.get("/", (req, res) => {
     res.render("index");
