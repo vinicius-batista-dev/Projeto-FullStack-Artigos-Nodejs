@@ -19,6 +19,6 @@ const Article = conn.define('articles', {
 Category.hasMany(Article); // Uma tem muitos
 Article.belongsTo(Category);// Uma pertence  a um
 
-Article.sync({force: true})
+/*Article.sync({force: true})*/
 
 module.exports = Article;
