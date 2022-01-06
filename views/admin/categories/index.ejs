@@ -38,9 +38,7 @@
 <script>
     function confirmarDelecao(event, form){
         event.preventDefault();
-        console.log("O formulario nao foi enviado");
         var decisao = confirm("Voce quer deletar esta categoria?");
-
         if(decisao){
             form.submit();
         }
