@@ -10,6 +10,14 @@
             <form action="/admin/articles/save" method="POST">
                 <input type="text" class="form-control" name="title" placeholder="Defina o título do artigo"><br>
                 <textarea name="body" class="form-control" id="articles" placeholder="Escreva o artigo aqui"></textarea><br>
+                <label>Categoria</label>
+                <select name="category" class="form-control">
+                    <% categories.forEach((category) => { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                    <% }) %>
+                </select>
+                <br >
+                <br >
                 <button type="submit" class="btn btn-success">Cadastrar</button>
             </form>
         </div>
@@ -20,9 +28,14 @@
 <script src="https://cdn.tiny.cloud/1/m4ao2qrl1d4hthgkssmedlhm1v2oy7tt48l95q5vgc7n8i4k/tinymce/5/tinymce.min.js" ></script>
 <script>
    tinymce.init({
+        language: 'pt_br',
+        height: 500,
         selector: "#articles",
         plugins: [
             'textpattern a11ychecker tinycomments tinymcespellchecker media mediaembed pageembed permanentpen powerpaste checklist advcode casechange formatpainter linkchecker autolink advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
         ],
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+        toolbar_mode: 'floating',
+        tinycomments_mode: 'embedded',
     })
 </script>
