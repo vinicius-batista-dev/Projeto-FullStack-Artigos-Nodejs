@@ -1,37 +1,56 @@
 <%- include ('../../components/header.ejs') %>
 <%- include ('../../components/navbar.ejs') %>
 
-    <div class="container">
-     <hr>
-     <h2>Artigos</h2>
-     <hr>
-     <a class="btn btn-success" href="/admin/articles/new">Novo artigo</a>
-     <hr>
-     <table class="table table-bordered">
-         <thead>
-            <tr> 
-                <th>Id</th>
-                <th>Titulo</th>
+<div class="container">
+    <hr>
+    <h2>Artigos</h2>
+    <a href="/admin/articles/new" class="btn btn-success">Criar novo artigo</a>
+    <hr>
+    
+    
+    <table class="table table-bordered">
+        <!-- Cabeçalho -->
+        <thead>
+            <!-- 
+                tr == linha
+                th == coluna
+             -->
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
                 <th>Slug</th>
-                <th>Category</th>
-                <th>Acoes</th>
+                <th>Categoria</th>
+                <th>Ações</th>
             </tr>
-         </thead>
-         <tbody>
+        </thead>
+        <!-- Corpo -->
+        <tbody>
             <% articles.forEach(article => { %>
-                <td><%= article.id %></td>
-                <td><%= article.title  %><td>
-                <td><%= article.slug %><td>
-                <td><%= article.categoryId %><td>
-                <td>Acoes<td>
-            <% }) %>
-         </tbody>
-     </table>
+                <tr>
+                    <td><%= article.id %></td>
+                    <td><%= article.title %></td>
+                    <td><%= article.slug %></td>
+                    <td><%= article.category.title %></td>
+                    <td>
+                        <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
+                        <form  method="POST" action="/admin/articles/delete" style="display: inline;"
+                            onsubmit="confirmDelete(event, this)">
+                            <!-- Ao clicar em deletar, enviamos o id pelo input -->
+                            <input type="hidden" name="id" value="<%= article.id %>">
+                                
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
 <%- include ('../../components/footer.ejs') %>
 <script>
     function confirmarDelecao(event, form){
         event.preventDefault();
-        var decisao = confirm("Voce quer deletar esta categoria?");
+        var decisao = confirm("Voce quer deletar este artigo?");
         if(decisao){
             form.submit();
         }

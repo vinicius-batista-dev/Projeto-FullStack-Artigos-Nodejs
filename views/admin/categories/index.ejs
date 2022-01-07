@@ -1,39 +1,49 @@
 <%- include ('../../components/header.ejs') %>
 <%- include ('../../components/navbar.ejs') %>
 
-    <div class="container">
-     <hr>
-     <h2>Categorias</h2>
-     <hr>
-     <a class="btn btn-success" href="/admin/categories/new">New Category</a>
-     <hr>
-     <table class="table table-bordered">
-         <thead>
-            <tr> 
-                <th>Id</th>
-                <th>Titulo</th>
+<div class="container">
+    <hr>
+    <h2>Categorias</h2>
+    <a href="/admin/categories/new" class="btn btn-success">Criar nova categoria</a>
+    <hr>
+    
+    
+    <table class="table table-bordered">
+        <!-- Cabeçalho -->
+        <thead>
+            <!-- 
+                tr == linha
+                th == coluna
+             -->
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
                 <th>Slug</th>
-                <th>Solucoes</th>
+                <th>Ações</th>
             </tr>
-         </thead>
-         <tbody>
-             <% categories.forEach(category => { %>
+        </thead>
+        <!-- Corpo -->
+        <tbody>
+            <% categories.forEach(category => { %>
                 <tr>
                     <th><%= category.id %></th>
                     <th><%= category.title %></th>
                     <th><%= category.slug %></th>
                     <th>
                         <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-warning">Editar</a>
-
-                        <form method="POST" action="/categories/delete" style="display: inline;" onsubmit="confirmarDelecao(event, this)">
+                        <form  method="POST" action="/categories/delete" style="display: inline;"
+                        onsubmit="confirmDelete(event, this)">
+                            <!-- Ao clicar em deletar, enviamos o id pelo input -->
                             <input type="hidden" name="id" value="<%= category.id %>">
+                            
                             <button class="btn btn-danger">Deletar</button>
                         </form>
                     </th>
                 </tr>
-            <% }) %>
-         </tbody>
-     </table>
+            <%  })%>
+        </tbody>
+    </table>
+</div>
 <%- include ('../../components/footer.ejs') %>
 <script>
     function confirmarDelecao(event, form){
