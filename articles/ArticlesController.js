@@ -62,7 +62,7 @@ router.get("/admin/articles/edit/:id", (req, res) => {
     });
 });
 
-router.post("/articles/delete", (req, res) => {
+router.post("/admin/articles/delete", (req, res) => {
     var id = req.body.id;
     if(id != undefined){
         if(!isNaN(id)){
