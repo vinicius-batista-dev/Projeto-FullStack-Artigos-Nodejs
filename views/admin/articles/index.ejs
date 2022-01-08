@@ -1,44 +1,36 @@
-<%- include ('../../partials/header.ejs') %>
-<%- include ('../../partials/navbar.ejs') %>
-
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
 <div class="container">
     <hr>
     <h2>Artigos</h2>
-    <a href="/admin/articles/new" class="btn btn-success">Criar novo artigo</a>
+    <a class="btn btn-success" href="/admin/articles/new">Novo Artigo</a>
     <hr>
-    
-    
     <table class="table table-bordered">
-        <!-- Cabeçalho -->
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Título</th>
+                <th>Titulo</th>
                 <th>Slug</th>
                 <th>Categoria</th>
                 <th>Ações</th>
             </tr>
         </thead>
-        <!-- Corpo -->
         <tbody>
             <% articles.forEach(article => { %>
                 <tr>
-                    <td><%= article.id %></td>
-                    <td><%= article.title %></td>
-                    <td><%= article.slug %></td>
-                    <td><%= article.category.title %></td>
+                    <td><%=article.id%></td>
+                    <td><%=article.title%></td>
+                    <td><%=article.slug%></td>
+                    <td><%=article.category.title%></td>
                     <td>
-                        <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
-                        <form  method="POST" action="/admin/articles/delete" style="display: inline;"
-                            onsubmit="confirmDelete(event, this)">
-                            <!-- Ao clicar em deletar, enviamos o id pelo input -->
-                            <input type="hidden" name="id" value="<%= article.id %>">
-                                
+                        <a href="/admin/articles/edit/<%=article.id%>" class="btn btn-warning">Editar</a>
+                        <form onsubmit="confirmDelete(event, this)" action="/admin/articles/delete" method="POST" style="display: inline;">
+                            <input type="hidden" name="id" value="<%=article.id%>">
                             <button class="btn btn-danger">Deletar</button>
                         </form>
                     </td>
                 </tr>
-            <% }); %>
+            <% }) %>
         </tbody>
     </table>
 </div>
@@ -47,11 +39,26 @@
 <script>
     function confirmDelete(event, form){
         event.preventDefault();
-        let decision = confirm("Deletar este artigo?");
+        const decision = confirm("Você quer deletar este artigo?");
         if(decision){
             form.submit();
-        }else{
-            console.log("Optou por não deltar")    
         }
     }
 </script>
+
+
+<script src="/tinymce/tinymce.min.js"></script>
+
+<script>
+    // Voltar na aula 90 para entender os plugins
+    tinymce.init({
+        selector: '#article',
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste  emoticons'
+        ],
+        init_instance_callback: () => {
+            tinymce.get("article").setContent($("#content").html());
+        } /* Para adicionar o conteúdo do body dentro do tinymce */
+    });
+</script>
+

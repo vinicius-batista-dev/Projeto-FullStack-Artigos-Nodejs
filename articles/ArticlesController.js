@@ -19,7 +19,7 @@ router.get('/admin/articles/new', (req, res) => {
     })
 });
 
-router.post("/articles/save", (req, res) => {
+router.post("/admin/articles/save", (req, res) => {
     const title = req.body.title;
     const body = req.body.body;
     const category = req.body.category;
@@ -60,25 +60,6 @@ router.get("/admin/articles/edit/:id", (req, res) => {
         console.log(err);
         res.redirect("/admin/articles");
     });
-});
-
-router.post("/admin/articles/update", (req, res) => {
-    const id = req.body.id;
-    const title = req.body.title;
-    const body = req.body.body;
-    const category = req.body.category;
-
-    Article.update({title: title, body: body, categoryId: category, slug: slugify(title)}, {
-        where: {
-            id: id
-        }
-    }).then(() => {
-        res.redirect("/admin/articles");
-    }).catch(err => {
-        console.log(err);
-        res.redirect("/admin/articles");
-    });
-
 });
 
 router.post("/articles/delete", (req, res) => {

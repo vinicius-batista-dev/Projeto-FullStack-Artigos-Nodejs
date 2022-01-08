@@ -2,53 +2,38 @@
 <%- include('../../partials/navbar.ejs') %>
 <div class="container">
     <hr>
-    <div class="container">
-
-        <div class="card">
-
-            <div class="card-header">
-                <h2>Novo artigo</h2>
-            </div>
-
-            <div class="card-body">
-
-                <form method="POST" action="/articles/save">
-                    <label for="title">Título</label>
-                    <input type='text' class="form-control" id="title" name="title"
-                        placeholder="Defina o título da categoria">
-                    <br>
-                    <label for="body">Conteúdo</label>
-                    <textarea class="form-control" placeholder="Escreva aqui seu artigo" name="body"
-                        id="body"></textarea>
-                    <br>
-                    <label for="category"> Categoria </label>
-                    <select id="category" name="category" class="form-control">
-                        <% categories.forEach(category => { %>
-                        <option value="<%= category.id %>"><%= category.title %></option>
-                        <% }) %>
-                    </select>
-                    <br>
-                    <button type="submit" class="btn btn-success">Cadastrar</button>
-
-                </form>
-
-            </div>
-
+    <div class="card">
+        <div class="card-header">
+            <h2>Cadastro de Artigo</h2>
         </div>
-
+        <div class="card-body">
+            <form action="/admin/articles/save" method="POST">
+                <input type="text" class="form-control" name="title" placeholder="Defina o título do artigo"><br>
+                <textarea name="body" class="form-control" id="body" placeholder="Escreva o artigo aqui"></textarea><br>
+                <label>Categoria</label>
+                <select name="categoryId" class="form-control">
+                    <% categories.forEach((category) => { %>
+                        <option value="<%=category.id%>"><%=category.title%></option>
+                    <% }) %>
+                </select><br>
+                <button type="submit" class="btn btn-success">Cadastrar</button>
+            </form>
+        </div>
+    </div>
 </div>
 <%- include('../../partials/footer.ejs') %>
 
-<script src="https://cdn.tiny.cloud/1/m4ao2qrl1d4hthgkssmedlhm1v2oy7tt48l95q5vgc7n8i4k/tinymce/5/tinymce.min.js" ></script>
+<script src="https://cdn.tiny.cloud/1/ecmv8248o2e20fx7h84i7icarjyjmyxmsfee34jqoatzjczr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     tinymce.init({
-        height: 500,
-        selector: "#articles",
+        selector: "#body",
         plugins: [
             'textpattern a11ychecker tinycomments tinymcespellchecker media mediaembed pageembed permanentpen powerpaste checklist advcode casechange formatpainter linkchecker autolink advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
         ],
-        toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
         toolbar_mode: 'floating',
         tinycomments_mode: 'embedded',
+        tinycomments_author: 'DesignRS',
+        language: 'pt_BR'
     })
 </script>
