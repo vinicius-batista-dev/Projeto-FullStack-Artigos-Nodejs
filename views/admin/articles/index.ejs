@@ -1,5 +1,5 @@
-<%- include ('../../components/header.ejs') %>
-<%- include ('../../components/navbar.ejs') %>
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
 
 <div class="container">
     <hr>
@@ -11,10 +11,6 @@
     <table class="table table-bordered">
         <!-- Cabeçalho -->
         <thead>
-            <!-- 
-                tr == linha
-                th == coluna
-             -->
             <tr>
                 <th>ID</th>
                 <th>Título</th>
@@ -46,26 +42,16 @@
         </tbody>
     </table>
 </div>
-<%- include ('../../components/footer.ejs') %>
-<script>
-    function confirmarDelecao(event, form){
-        event.preventDefault();
-        var decisao = confirm("Voce quer deletar este artigo?");
-        if(decisao){
-            form.submit();
-        }
-    }
-</script>
+<%- include('../../partials/footer.ejs') %>
 
 <script>
-    // Voltar na aula 90 para entender os plugins
-    tinymce.init({
-        selector: '#article',
-        plugins: [
-            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste  emoticons'
-        ],
-        init_instance_callback: () => {
-            tinymce.get("article").setContent($("#content").html());
-        } /* Para adicionar o conteúdo do body dentro do tinymce */
-    });
+    function confirmDelete(event, form){
+        event.preventDefault();
+        let decision = confirm("Deletar este artigo?");
+        if(decision){
+            form.submit();
+        }else{
+            console.log("Optou por não deltar")    
+        }
+    }
 </script>

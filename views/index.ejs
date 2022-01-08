@@ -1,5 +1,32 @@
-<%- include ('components/header') %>
+<%- include('./partials/header.ejs') %> 
+<%- include('./partials/homenavbar.ejs') %>
 <body>
-    <h1>Teste</h1>
-</body>
-<%- include ('components/footer') %>
+    <div class="container">
+        <hr>
+        <div class="jumbotron">
+            <h1 class="display-4">Bem, vindo!</h1>
+            <p class="lead">Este é um simples crud.</p>
+            <hr class="my-4">
+            <p>Projeto de um simples blog utilizando NodeJs + Express, Ejs, mySql com sequelize, boostrap.</p>
+            <a class="btn btn-dark btn-lg" href="#" role="button">Leia mais</a>
+          </div>
+        <hr>
+        <% articles.forEach(article => { %>
+            <div class="card">
+                <div class="card-header">
+                    <h2><%= article.title %></h2>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-dark" href="/<%= article.slug %> ">Ler Artigo</a> <!--Entrando na rota .get('/:slug')-->
+                </div>
+            </div>
+            <br>
+        <% }) %>
+        <div class="row">
+            <div class="col col-12">
+                <a style="float: right; color: #000000;" href="/articles/page/2"> Próximo &#9654; </a>
+            </div>
+        </div>
+        <hr>
+    </div> 
+<%- include('./partials/footer.ejs') %> 
