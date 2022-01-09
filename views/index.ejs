@@ -1,32 +1,36 @@
-<%- include('./partials/header.ejs') %> 
-<%- include('./partials/homenavbar.ejs') %>
+<%- include('partials/header.ejs') %>
+<%- include('partials/homenavbar.ejs') %>
 <body>
     <div class="container">
         <hr>
         <div class="jumbotron">
-            <h1 class="display-4">Bem, vindo!</h1>
-            <p class="lead">Este é um simples crud.</p>
+            <h1 class="display-4">Bem vindo!</h1>
+            <p class="lead">Este é um simples blog</p>
             <hr class="my-4">
-            <p>Projeto de um simples blog utilizando NodeJs + Express, Ejs, mySql com sequelize, boostrap.</p>
-            <a class="btn btn-dark btn-lg" href="#" role="button">Leia mais</a>
+            <p>detalhes...</p>
+            <p class="lead">
+              <a class="btn btn-primary btn-lg" href="/login" role="button">Admin login</a>
+            </p>
           </div>
         <hr>
-        <% articles.forEach(article => { %>
+        <% articles.forEach(article =>{ %>
             <div class="card">
                 <div class="card-header">
                     <h2><%= article.title %></h2>
                 </div>
                 <div class="card-body">
-                    <a class="btn btn-dark" href="/<%= article.slug %> ">Ler Artigo</a> <!--Entrando na rota .get('/:slug')-->
+                    <a href="/<%= article.slug %>" class="btn btn-primary">Ler artigo</a>
                 </div>
             </div>
             <br>
-        <% }) %>
+        <% })%> 
         <div class="row">
             <div class="col col-12">
-                <a style="float: right; color: #000000;" href="/articles/page/2"> Próximo &#9654; </a>
+               <a href="/articles/page/2" style="float: right;">Next >>></a>
             </div>
-        </div>
-        <hr>
-    </div> 
-<%- include('./partials/footer.ejs') %> 
+            <hr>
+       </div>
+       <hr>
+    </div>
+</body>
+<%- include('partials/footer.ejs') %>

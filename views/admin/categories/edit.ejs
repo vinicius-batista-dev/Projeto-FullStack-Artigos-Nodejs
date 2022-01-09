@@ -1,21 +1,21 @@
-<%- include ('../../components/header.ejs') %>
-<%- include ('../../components/navbar.ejs') %>
-<div class="container">
-    <hr>
-    <div class="card">
-        <div class="card-header">
-            <h2>Edição de categoria</h2>
-        </div>
-        <div class="card-body">
-            <form  method="POST" action="/categories/update">
-                <input class="form-control" type="text" name="title" placeholder="Defina o título da categoria" value="<%= category.title %>">
-                <input type="hidden" name="id" value="<%= category.id %>">
-                <br>
-                <button class="btn btn-success">Atualizar</button>
-            </form>
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<body>
+    <div class="container">
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                <h2>Edicao de categoria</h2>
+            </div>
+            <div class="card-body">
+                <form action="/categories/update" method="POST">
+                    <input class="form-control" type="text" name="title" value="<%= category.title %>"placeholder="Defina o titulo da categoria">
+                    <br>
+                    <input type="hidden" value="<%= category.id %>" name="id">
+                    <button class="btn btn-primary">Editar</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-<%- include ('../../components/footer.ejs') %>
-
+</body>
+<%- include('../../partials/footer.ejs') %>
