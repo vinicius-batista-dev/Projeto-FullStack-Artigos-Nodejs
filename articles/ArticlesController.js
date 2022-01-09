@@ -5,144 +5,121 @@ const Article = require('../articles/Article');
 const slugify = require('slugify');
 
 router.get("/admin/articles", (req, res) => {
-    Article.findAll({
-        include: [{ model: Category }]
-    }).then(articles => {
-        res.render("admin/articles/index", { articles: articles.filter(a => a.category != undefined) });
-    })
+  Article.findAll({
+      include: [{model: Category}]
+  }).then(articles => {
+      res.render("admin/articles/index",{articles: articles})
+  });
 });
 
-router.get('/admin/articles/new', (req, res) => {
-  Category.findAll().then(categories=>{
-    res.render('admin/articles/new',{categories: categories});
-  })  
+router.get("/admin/articles/new", (req ,res) => {
+  Category.findAll().then(categories => {
+      res.render("admin/articles/new",{categories: categories})
+  })    
 })
 
-router.post('/articles/save', (req, res) => {
+router.post("/articles/save",  (req, res) => {
   var title = req.body.title;
   var body = req.body.body;
   var category = req.body.category;
 
   Article.create({
-    title: title,
-    body: body,    
-    slug: slugify(title.toLowerCase()),
-    categoryId: category
+      title: title,
+      slug: slugify(title),
+      body: body,
+      categoryId: category
   }).then(() => {
-    res.redirect('/admin/articles');
-  });  
-})
+      res.redirect("/admin/articles");
+  });
+});
 
-router.post('/articles/update', (req, res) => {
-    var id = req.body.article_id;
-    var title = req.body.title;
-    var body = req.body.body;
-    var category = req.body.category;
-    if (title != undefined){
-        Article.update({
-          title: title,
-          slug: slugify(title.toLowerCase()),
-          body: body,
-          categoryId: category
-        }, {
-          where: {
-            id: id
-          }
-        }).then(()=>{
-          res.redirect('/admin/articles');
-        });
-    } else { // Se for nulo
-        res.redirect('/admin/articles/edit');
-    }
-})
 
-router.get('/admin/articles/edit/:id', (req, res) => {
-    var id = req.params.id;
-    
-    if(isNaN(id)){ //Verifica se existe o id passado no get, se não existir retornar para tela de listagem
-        res.redirect('/admin/articles');
-    }
-
-    Article.findByPk(id).then(article => {
-        if (article != undefined){
-            Category.findAll().then(categories => { // Linha necessária para preencher a navbar
-              res.render('admin/articles/edit', {article: article, categories: categories})  
-            });
-        } else {
-            res.redirect('/admin/articles/edit')
-        }
-    });   
-})
-
-router.post("/articles/delete", (req, res) => {
+router.post("/articles/delete",  (req, res) => {
   var id = req.body.id;
-  if (id != undefined) {
-      if (!isNaN(id)) {
+  if(id != undefined){
+      if(!isNaN(id)){
           Article.destroy({
-              where: { id: id }
+              where: {
+                  id: id
+              }
           }).then(() => {
               res.redirect("/admin/articles");
-          })
-      } else {
+          });
+      }else{// NÃO FOR UM NÚMERO
           res.redirect("/admin/articles");
       }
-  } else {
+  }else{ // NULL
       res.redirect("/admin/articles");
   }
 });
 
-router.get('/admin/articles/delete/:id', (req, res) => {
-    var id = req.params.id;  
-    if (id != undefined) {
-        if(!isNaN(id)){
-          Article.destroy({
-            where: {
-              id:id
-            }
-          }).then(()=>{
-            res.redirect('/admin/articles');
+router.get("/admin/articles/edit/:id", (req, res) => {
+  var id = req.params.id;
+  Article.findByPk(id).then(article => {
+      if(article != undefined){
+          Category.findAll().then(categories => {
+              res.render("admin/articles/edit", {categories: categories, article: article})
+
           });
-        } else { // se o id não for número      
-          res.redirect('/admin/articles');
-        }
-    } else { // Se for nulo
-        res.redirect('/admin/articles');
-    }
-})
+      }else{
+          res.redirect("/");
+      }
+  }).catch(err => {
+      res.redirect("/");
+  });
+});
 
-router.get('/articles/page/:num', (req, res) => {
-    var page = req.params.num;
-    var offset = 0;
+router.post("/articles/update",(req, res) => {
+  var id = req.body.id;
+  var title = req.body.title;
+  var body = req.body.body;
+  var category = req.body.category
 
-    if (isNaN(page) || page == 0 || page == 1){
-        offset = 0;
-    } else {
-        offset = (parseInt(page) -1) * 4; // O offset deve ser igual ao offset multiplado pelo qnt de registros na
-    }
-    
-    // Esse método pesquisa todos os elemntos no BD retornando a quantidade de elementos nessa tabela
-    Article.findAndCountAll({
-        limit: 4, // limita a quantidade de registro por listagem
-        offset: offset, // Retorna dados a partir de um valor. Ex.: retornar os artigos após o 10º registro. Assim, o offset faz com que apareçam os artigos do 10º ao 14º
-        order: [
-            ['id', 'DESC']
-        ]
-    }).then(articles => {
-        var next;
-        
-        if(offset + 4 >= articles.count){ // Verifica se a quntidade de artigos ultrapassou a qnt de artigos existentes no banco de dados
-            next = false
-        } else {
-            next = true;
-        }
+  Article.update({title: title, body: body, categoryId: category, slug:slugify(title)},{
+      where: {
+          id: id
+      }
+  }).then(() => {
+      res.redirect("/admin/articles");
+  }).catch(err => {
+      res.redirect("/");
+  });
+});
 
-        var result = {
+router.get("/articles/page/:num",(req, res) => {
+  var page = req.params.num;
+  var offset = 0;
+
+  if(isNaN(page) || page == 1){
+      offset = 0;
+  }else{
+      offset = (parseInt(page) - 1) * 4;
+  }
+
+  Article.findAndCountAll({
+      limit: 4,
+      offset: offset,
+  }).then(articles => {
+      var next;
+      if(offset + 4 >= articles.count){
+          next = false;
+      }else{
+          next = true;
+      }
+
+      var result = {
+          page: parseInt(page),
           next: next,
-          articles: articles
-        }
+          articles : articles
+      }
 
-        res.json(result);
-    });
-})
+      Category.findAll().then(categories => {
+          res.render("admin/articles/page",{result: result, categories: categories})
+      });
+  })
+
+
+});
+
 
 module.exports = router;

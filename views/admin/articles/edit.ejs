@@ -1,44 +1,53 @@
 <%- include('../../partials/header.ejs') %>
 <%- include('../../partials/navbar.ejs') %>
-<body>
-    <div class="container">
-        <hr>
-        <div class="card">
-            <div class="card-header">
-                <h2>Edicao de artigos</h2>
-            </div>
-            <div class="card-body">
-                <form action="/articles/update" method="POST">
-                    <input class="form-control" type="text" name="title" value="<%= article.title %>"placeholder="Defina o titulo da categoria">
-                    <br>
-                    <textarea name="body" class="form-control" placeholder="Escreva o artigo" id="articles" value="<%= article.body %>"><%= article.body %></textarea>
-                    <br>
-                    <label>categorias</label>
-                    <select name="categoryId" id="category" class="form-control">
-                        <% categories.forEach((category)=>{ %>
-                            <% if(category.id == article.categoryId){ %>
-                                <option value="<%= category.id %>" selected><%= category.title %></option>
-                                <% }else{ %>
-                                    <option value="<%= category.id %>"><%= category.title %></option>
-                                    <% }%>
-                        <% }); %>
-                    </select>
-                    <br>
-                    <input type="hidden" value="<%= article.id %>" name="id">
-                    <button class="btn btn-primary">Editar</button>
-                </form>
-            </div>
+
+<div class="container">
+    <hr>
+    <div class="card"> 
+        <div class="card-header">
+            <h2>Editar artigo</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/articles/update">
+                <input type="hidden" value="<%= article.id %>" name="id">
+                <input class="form-control" type="text" name="title" placeholder="Defina o título do artigo" value="<%= article.title %>"><br>
+                <textarea class="form-control" placeholder="Escreva o artigo aqui!" name="body" id="article"></textarea><br>
+                <label>Categoria</label>
+                <select name="category" class="form-control">
+                    <% categories.forEach((category) => { %>
+                        <% if(category.id == article.categoryId) { %> 
+                            <option value="<%= category.id %>" selected><%= category.title %></option>
+                        <% } else { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% } %>   
+                    <% }) %>
+                </select>
+                <br>
+                <button class="btn btn-success">Atualizar</button>
+            </form>
         </div>
     </div>
-</body>
+</div>
+
+<div id="content" style="display: none;">
+    <%- article.body %>
+</div>
+
+
 <script src="/tinymce/tinymce.min.js"></script>
 <script>
+
     tinymce.init({
         language: 'pt_BR',
-         selector: "#articles",
-         plugins: [
-             'advlist autolink link image lists print preview hr searchreplace wordcount fullscrean media save table insertdatetime paste emoticons'
-         ]
-    });
+        selector: "#article",
+        activeEditor: true,
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+        ],
+        init_instance_callback: () => {
+            tinymce.get("article").setContent($("#content").html())
+        }
+    })
+
 </script>
 <%- include('../../partials/footer.ejs') %>
