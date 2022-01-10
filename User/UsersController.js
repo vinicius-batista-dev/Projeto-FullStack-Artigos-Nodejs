@@ -4,6 +4,8 @@ const User = require('./Users');
 const bcrypt = require('bcryptjs');
 
 router.get("/admin/users", (req, res) => {
+  
+    
     User.findAll().then(users => {
         res.render("admin/users/index", {user: users});
     })
@@ -51,7 +53,7 @@ router.post("/authenticate", (req, res) => {
         if(user != undefined){// se existe um usuario com esse email
             //Validar senha
             var correct = bcrypt.compareSync(password, user.password);
-            
+
             if(correct){
                 req.session.user = {
                     id: user.id,
