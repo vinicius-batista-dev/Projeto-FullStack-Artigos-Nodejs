@@ -53,7 +53,7 @@ router.post("/articles/delete",  (req, res) => {
   }
 });
 
-router.get("/admin/articles/edit/:id", (req, res) => {
+router.get("/admin/articles/edit/:id",(req, res) => {
   var id = req.params.id;
   Article.findByPk(id).then(article => {
       if(article != undefined){
@@ -69,7 +69,7 @@ router.get("/admin/articles/edit/:id", (req, res) => {
   });
 });
 
-router.post("/articles/update",(req, res) => {
+router.post("/articles/update",  (req, res) => {
   var id = req.body.id;
   var title = req.body.title;
   var body = req.body.body;
@@ -120,6 +120,7 @@ router.get("/articles/page/:num",(req, res) => {
 
 
 });
+
 
 
 module.exports = router;

@@ -1,5 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-allign">
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">
+        GuiaPress
+    </a>
 
     <ul class="navbar-nav mr-auto">
 
@@ -9,7 +11,7 @@
 
         <% categories.forEach(category => { %>
             <li class="nav-item">
-                <a  class="nav-link" href="/category/<%= category.slug %>"></a>
+                <a  class="nav-link" href="/category/<%= category.slug %>"><%= category.title %></a>
             </li>
         <% }) %>
     </ul>

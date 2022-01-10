@@ -24,62 +24,56 @@ conn.authenticate().then(() => { console.log("Conexao feita com sucesso.");}).ca
 app.use("/", categoriesController);
 app.use("/", articlesController);
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     Article.findAll({
-        order: [
-            ['id', 'DESC']
+        order:[
+            ['id','DESC']
         ],
-        include:[{model:Category, required: true}]
+        limit: 4
     }).then(articles => {
         Category.findAll().then(categories => {
-            res.render('index.ejs', {articles: articles, categories: categories});
-        });        
-    });    
-});
+            res.render("index", {articles: articles, categories: categories});
+        });
+    });
+})
 
-app.get('/:slug', (req, res) => {
+app.get("/:slug",(req, res) => {
     var slug = req.params.slug;
     Article.findOne({
         where: {
             slug: slug
-        },
-        include: [{
-            model: Article,
-            include: [{model: Category}],
-        }]    
-    }).then(article => {
-        if (article != undefined){
-            Category.findAll().then(categories => {
-                res.render('article', {article: article, categories: categories});
-            }); 
-        } else {
-            res.redirect('/');
         }
-    }).catch(error => {
-        console.log('Ocorreu um erro: '+error);
-        res.redirect('/');
+    }).then(article => {
+        if(article != undefined){
+            Category.findAll().then(categories => {
+                res.render("article", {article: article, categories: categories});
+            });
+        }else{
+            res.redirect("/");
+        }
+    }).catch( err => {
+        res.redirect("/");
     });
 })
 
-app.get('/category/:slug', (req, res) => {
+app.get("/category/:slug",(req, res) => {
     var slug = req.params.slug;
     Category.findOne({
         where: {
             slug: slug
         },
-        include: [{model: Article}] //Serve como um join para ligar category e article
-    }).then(category => {
+        include: [{model: Article}]
+    }).then( category => {
         if(category != undefined){
             Category.findAll().then(categories => {
-                res.render('index', {articles: category.articles, categories: categories});
+                res.render("index",{articles: category.articles,categories: categories});
             });
-        } else {
-            res.redirect('/');
+        }else{
+            res.redirect("/");
         }
-    }).catch(error => {
-        console.log('Ocorreu um erro: '+error)
-        res.redirect('/');
-    });
+    }).catch( err => {
+        res.redirect("/");
+    })
 })
 
 app.listen(PORT, () => {
