@@ -8,6 +8,7 @@ const usersController = require('./User/UsersController');
 
 const Article = require('./articles/Article');
 const Category = require('./categories/Category');
+const User = require('./User/Users');
 
 const app = express();
 
