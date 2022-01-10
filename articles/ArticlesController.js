@@ -114,6 +114,7 @@ router.get("/articles/page/:num",(req, res) => {
       }
 
       Category.findAll().then(categories => {
+        //var receber uma lista de resultado e categorias
           res.render("admin/articles/page",{result: result, categories: categories})
       });
   })

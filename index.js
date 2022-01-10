@@ -4,6 +4,7 @@ const conn = require('./database/database');
 
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
+const usersController = require('./User/UsersController');
 
 const Article = require('./articles/Article');
 const Category = require('./categories/Category');
@@ -23,12 +24,14 @@ conn.authenticate().then(() => { console.log("Conexao feita com sucesso.");}).ca
 
 app.use("/", categoriesController);
 app.use("/", articlesController);
+app.use("/", usersController);
 
 app.get("/", (req, res) => {
     Article.findAll({
         order:[
             ['id','DESC']
         ],
+        //Limite de artigos
         limit: 4
     }).then(articles => {
         Category.findAll().then(categories => {
